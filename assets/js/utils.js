@@ -338,20 +338,43 @@ function daysBetween(date1, date2) {
 // MOBILE MENU TOGGLE
 // ============================================
 
+/**
+ * Initialize the mobile navigation toggle functionality.
+ * Ensures the menu opens and closes on mobile devices.
+ */
 function initMobileMenu() {
+    console.log("⚡ Surya Diet: Initializing Mobile Menu...");
     const toggle = document.querySelector('.nav-toggle');
     const menu = document.querySelector('.nav-menu');
 
     if (toggle && menu) {
-        toggle.addEventListener('click', () => {
+        // Remove existing listener if any to avoid double execution
+        toggle.replaceWith(toggle.cloneNode(true));
+        const newToggle = document.querySelector('.nav-toggle');
+
+        newToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log("⚡ Surya Diet: Menu Toggle Clicked");
             menu.classList.toggle('active');
+
+            // Log state for debugging
+            const isActive = menu.classList.contains('active');
+            console.log("⚡ Surya Diet: Menu Status ->", isActive ? "OPEN" : "CLOSED");
         });
+
+        console.log("⚡ Surya Diet: Mobile Menu Ready");
+    } else {
+        console.warn("⚠️ Surya Diet: Mobile menu elements not found in this page");
     }
 }
 
-// Initialize on DOM load
+// Initialize on DOM load or immediately if already loaded
 if (typeof document !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', initMobileMenu);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMobileMenu);
+    } else {
+        initMobileMenu();
+    }
 }
 
 // ============================================
