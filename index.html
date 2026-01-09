@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Father Strength Mobile Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Inter:wght@400;600;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333; /* Dark background for desktop viewing */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone-frame {
+            width: 100%;
+            max-width: 450px; /* Simulates a large phone screen */
+            background-color: #fff;
+            min-height: 100vh;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        .font-header { font-family: 'Oswald', sans-serif; }
+
+        .section-box {
+            border: 2px solid #000;
+            padding: 16px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .section-title {
+            background: #000;
+            color: #fff;
+            display: inline-block;
+            padding: 4px 12px;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            font-size: 14px;
+            position: absolute;
+            top: -14px;
+            left: 12px;
+        }
+
+        .time-tag {
+            font-size: 12px;
+            font-weight: 800;
+            color: #666;
+            margin-bottom: 8px;
+            display: block;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 4px;
+        }
+
+        /* Print/Screenshot Optimization */
+        @media print {
+            body { background: white; }
+            .phone-frame { max-width: 100%; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-frame">
+        
+        <!-- HEADER -->
+        <div class="text-center mb-8 border-b-4 border-black pb-4">
+            <h1 class="text-5xl font-header font-bold leading-none">FATHER<br>STRENGTH</h1>
+            <p class="text-xs uppercase tracking-[0.3em] mt-2 font-bold text-gray-500">The Protocol • 2026</p>
+            <div class="flex justify-between mt-4 text-xs font-bold border-t border-gray-200 pt-2">
+                <span>TARGET: 72KG</span>
+                <span>TRAIN: 90MIN</span>
+            </div>
+        </div>
+
+        <!-- 1. IGNITION -->
+        <div class="section-box">
+            <div class="section-title">01. WAKE UP</div>
+            <span class="time-tag">05:00 AM • HYDRATION</span>
+            <ul class="text-sm space-y-2 font-medium">
+                <li class="flex items-center"><i class="fas fa-glass-water w-6"></i> 300ml Hot Water</li>
+                <li class="flex items-center"><i class="fas fa-leaf w-6"></i> 1-2g Dry Ginger</li>
+            </ul>
+            <div class="mt-3 bg-gray-100 p-2 text-xs border-l-2 border-black">
+                <strong>MINDSET:</strong> No Phone (20m). Cold water splash. Visualize the win.
+            </div>
+        </div>
+
+        <!-- 2. POWER BOWL -->
+        <div class="section-box">
+            <div class="section-title">02. POWER BOWL</div>
+            <span class="time-tag">PRE & POST WORKOUT</span>
+            <div class="text-sm mb-3">
+                <div class="flex justify-between mb-1"><span>60g Oats + Ragi</span> <span class="font-bold">Base</span></div>
+                <div class="flex justify-between mb-1"><span>200ml Milk</span> <span class="font-bold">Liquid</span></div>
+                <div class="flex justify-between mb-1"><span>20g Seeds/Berries</span> <span class="font-bold">Micro</span></div>
+                <div class="flex justify-between mb-1"><span>25g Peanut Butter</span> <span class="font-bold">Fat</span></div>
+                <div class="flex justify-between"><span>20g Whey Protein</span> <span class="font-bold">Growth</span></div>
+            </div>
+            
+            <div class="bg-black text-white p-3 text-xs text-center">
+                <div class="grid grid-cols-2 gap-2 divide-x divide-gray-600">
+                    <div>
+                        <span class="block font-bold text-green-400 mb-1">PRE-GYM</span>
+                        Eat 50%<br>+ 3g Creatine
+                    </div>
+                    <div>
+                        <span class="block font-bold text-blue-400 mb-1">POST-GYM</span>
+                        Eat 50%<br>+ 1 Scoop Whey
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ESSENTIALS STACK -->
+        <div class="grid grid-cols-3 gap-2 mb-6 text-center">
+            <div class="border-2 border-black p-2">
+                <div class="text-xl font-bold">4L</div>
+                <div class="text-[10px] font-bold">WATER</div>
+            </div>
+            <div class="border-2 border-black p-2">
+                <div class="text-xl font-bold">1</div>
+                <div class="text-[10px] font-bold">MULTI-VIT</div>
+            </div>
+            <div class="border-2 border-black p-2 bg-gray-100">
+                <div class="text-xl font-bold">7h</div>
+                <div class="text-[10px] font-bold">SLEEP</div>
+            </div>
+        </div>
+
+        <!-- 3. LUNCH -->
+        <div class="section-box">
+            <div class="section-title">03. LUNCH</div>
+            <span class="time-tag">13:00 PM • SUSTAIN</span>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between border-b border-gray-200 pb-1">
+                    <span>Rice (Raw Wt)</span>
+                    <span class="font-bold">75g</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-200 pb-1">
+                    <span>Veggies (Fiber)</span>
+                    <span class="font-bold">200-300g</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-200 pb-1">
+                    <span>Veg Curry</span>
+                    <span class="font-bold">Low Oil</span>
+                </div>
+                <div class="flex justify-between font-bold text-blue-600">
+                    <span>+ 1 Fish Oil Pill</span>
+                </div>
+            </div>
+            <div class="mt-3 text-xs font-bold text-center border border-dashed border-black p-1">
+                + DAILY FRUIT (Apple/Banana/Pom)
+            </div>
+        </div>
+
+        <!-- PROTEIN ROTATION -->
+        <div class="section-box bg-gray-50 border-dashed">
+            <div class="section-title">PROTEIN ROTATION</div>
+            <span class="time-tag">DAILY MAIN SOURCE</span>
+            <div class="space-y-3">
+                <div class="flex items-center gap-3">
+                    <div class="bg-black text-white w-8 h-8 flex items-center justify-center font-bold text-lg">4</div>
+                    <div>
+                        <div class="text-xs font-bold text-gray-500">DAYS / WEEK</div>
+                        <div class="font-bold text-lg">CHICKEN (200g)</div>
+                    </div>
+                </div>
+                <div class="w-full border-b border-gray-300"></div>
+                <div class="flex items-center gap-3">
+                    <div class="bg-white border-2 border-black w-8 h-8 flex items-center justify-center font-bold text-lg">3</div>
+                    <div>
+                        <div class="text-xs font-bold text-gray-500">DAYS / WEEK</div>
+                        <div class="font-bold text-lg">SOYA (100g)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. SNACK -->
+        <div class="section-box">
+            <div class="section-title">04. SNACK</div>
+            <span class="time-tag">17:00 PM • RECOVERY</span>
+            <div class="flex justify-center items-center gap-6">
+                <div class="text-center">
+                    <span class="text-3xl font-bold block">1</span>
+                    <span class="text-xs font-bold text-gray-500">WHOLE</span>
+                </div>
+                <span class="text-2xl text-gray-300">+</span>
+                <div class="text-center">
+                    <span class="text-3xl font-bold block">2</span>
+                    <span class="text-xs font-bold text-gray-500">WHITES</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. DINNER -->
+        <div class="section-box">
+            <div class="section-title">05. DINNER</div>
+            <span class="time-tag">20:30 PM • LIGHT END</span>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between border-b border-gray-200 pb-1">
+                    <span>Rice (Raw Wt)</span>
+                    <span class="font-bold">75g</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Curry / Curd</span>
+                    <span class="font-bold">Standard</span>
+                </div>
+            </div>
+            <div class="text-xs text-gray-500 italic mt-2 text-center">
+                Digest before sleep.
+            </div>
+        </div>
+
+        <!-- SAFETY VALVE -->
+        <div class="border-2 border-dashed border-black p-4 mb-6">
+            <div class="font-bold text-sm mb-2"><i class="fas fa-shield-alt mr-2"></i>HUNGER SAFETY VALVE</div>
+            <p class="text-xs mb-2">Feeling weak? Eat <strong>ONE</strong> (200kcal):</p>
+            <ul class="text-xs list-disc ml-5 font-bold space-y-1">
+                <li>10-12 Almonds/Walnuts</li>
+                <li>1 Protein Bar</li>
+                <li>50g Roasted Chana</li>
+            </ul>
+        </div>
+
+        <!-- PROTOCOLS -->
+        <div class="bg-black text-white p-6 mb-6">
+            <h2 class="font-header text-2xl mb-4 border-b border-white pb-2">DEFENSE PROTOCOLS</h2>
+            
+            <div class="mb-4">
+                <strong class="text-gray-400 text-xs block mb-1">PARENTS' HOME</strong>
+                <ul class="text-xs space-y-1 list-disc ml-4">
+                    <li>Skip Breakfast (Intermittent Fast).</li>
+                    <li>Eat Protein (Dal/Chicken) First.</li>
+                    <li>Take 50% portion size.</li>
+                </ul>
+            </div>
+
+            <div>
+                <strong class="text-gray-400 text-xs block mb-1">PARTY & BOOZE</strong>
+                <ul class="text-xs space-y-1 list-disc ml-4">
+                    <li>Eat Curd/Whey BEFORE leaving.</li>
+                    <li>Vodka/Gin + Water (No Sugar).</li>
+                    <li>1 Drink = 1 Water.</li>
+                    <li>Tandoori Snacks Only.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="text-center text-xs font-bold text-gray-400 pb-8">
+            NO EXCUSES. EXECUTE.<br>
+            ~160g PROTEIN | ~2350 KCAL
+        </div>
+
+    </div>
+
+</body>
+</html>
