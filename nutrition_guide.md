@@ -411,4 +411,4 @@
 
 **⚡ NO EXCUSES. EXECUTE. ⚡**
 
-*This nutrition guide provides comprehensive information for tracking and optimizing your Father Strength protocol.*
+*This nutrition guide provides comprehensive information for tracking and optimizing your Surya Plan protocol.*
