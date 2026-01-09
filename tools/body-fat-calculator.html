@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BODY FAT CALCULATOR - Surya Diet</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">⚡ SURYA DIET</div>
+            <ul class="nav-menu">
+                <li><a href="../../home.html" class="nav-link">Home</a></li>
+                <li><a href="../../nutrition/maintenance-protocol.html" class="nav-link">Nutrition</a></li>
+                <li><a href="#" class="nav-link active">Tools</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container container-narrow">
+        <header class="section text-center">
+            <h1 class="text-gold">BODY FAT CALCULATOR</h1>
+            <p class="text-white">US Navy Method. Measure neck and waist circumference.</p>
+        </header>
+
+        <div class="card mb-xl">
+            <form>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
+                        <select class="form-select" id="gender" onchange="toggleHip()">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Height (cm)</label>
+                        <input type="number" class="form-input" id="height" value="175">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Neck (cm)</label>
+                        <input type="number" class="form-input" id="neck" value="38">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Waist (cm)</label>
+                        <input type="number" class="form-input" id="waist" value="85">
+                    </div>
+                    <div class="form-group" id="hipGroup" style="display: none;">
+                        <label class="form-label">Hip (cm)</label>
+                        <input type="number" class="form-input" id="hip" value="95">
+                    </div>
+                </div>
+                <div class="text-center mt-lg">
+                    <button type="button" class="btn btn-primary" onclick="calculate()">CALCULATE BF%</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="results" class="card card-dark" style="display: none;">
+            <div class="text-center">
+                <h3 class="text-gold">YOUR ESTIMATED BODY FAT</h3>
+                <h1 class="text-white" style="font-size: 4rem;" id="bfResult">0%</h1>
+                <p class="mt-md text-gold" id="category"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        function toggleHip() {
+            const gender = document.getElementById('gender').value;
+            document.getElementById('hipGroup').style.display = gender === 'female' ? 'block' : 'none';
+        }
+
+        function calculate() {
+            const gender = document.getElementById('gender').value;
+            const height = parseFloat(document.getElementById('height').value);
+            const neck = parseFloat(document.getElementById('neck').value);
+            const waist = parseFloat(document.getElementById('waist').value);
+            const hip = parseFloat(document.getElementById('hip').value || 0);
+
+            const bf = calculateBodyFat(gender, height, neck, waist, hip);
+
+            document.getElementById('bfResult').innerText = bf + '%';
+
+            let cat = '';
+            if (gender === 'male') {
+                if (bf < 10) cat = 'Essential Fat / Athlete';
+                else if (bf < 18) cat = 'Fitness';
+                else if (bf < 25) cat = 'Average';
+                else cat = 'Obese';
+            } else {
+                if (bf < 18) cat = 'Essential Fat / Athlete';
+                else if (bf < 25) cat = 'Fitness';
+                else if (bf < 32) cat = 'Average';
+                else cat = 'Obese';
+            }
+            document.getElementById('category').innerText = cat;
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

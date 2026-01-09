@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEAL PLANNER - Surya Diet</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">⚡ SURYA DIET</div>
+            <ul class="nav-menu">
+                <li><a href="../../home.html" class="nav-link">Home</a></li>
+                <li><a href="../../nutrition/maintenance-protocol.html" class="nav-link">Nutrition</a></li>
+                <li><a href="../../tools/macro-calculator.html" class="nav-link active">Tools</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="section text-center">
+            <h1 class="text-gold">MEAL DISTRIBUTOR</h1>
+            <p class="text-white">Break down your daily macros into meals.</p>
+        </header>
+
+        <div class="card mb-lg">
+            <div class="grid grid-4" style="align-items: end;">
+                <div class="form-group">
+                    <label class="form-label">Total Calories</label>
+                    <input type="number" class="form-input" id="cal" value="2350">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Protein (g)</label>
+                    <input type="number" class="form-input" id="pro" value="160">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Carbs (g)</label>
+                    <input type="number" class="form-input" id="carb" value="220">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Fats (g)</label>
+                    <input type="number" class="form-input" id="fat" value="90">
+                </div>
+            </div>
+            <div class="form-group mt-md">
+                <label class="form-label">Number of Meals</label>
+                <select class="form-select" id="meals">
+                    <option value="3">3 Meals</option>
+                    <option value="4" selected>4 Meals (Recommended)</option>
+                    <option value="5">5 Meals</option>
+                    <option value="6">6 Meals</option>
+                </select>
+            </div>
+            <div class="text-center mt-lg">
+                <button class="btn btn-primary" onclick="plan()">DISTRIBUTE MACROS</button>
+            </div>
+        </div>
+
+        <div id="results" style="display: none;">
+            <h2 class="text-center text-gold mb-lg">TARGETS PER MEAL</h2>
+            <div class="grid grid-4 text-center">
+                <div class="card card-dark">
+                    <h3 id="mCal" class="text-white">0</h3>
+                    <p class="text-gold">CALORIES</p>
+                </div>
+                <div class="card card-dark">
+                    <h3 id="mPro" class="text-green">0</h3>
+                    <p class="text-green">PROTEIN</p>
+                </div>
+                <div class="card card-dark">
+                    <h3 id="mCarb" class="text-gold">0</h3>
+                    <p class="text-gold">CARBS</p>
+                </div>
+                <div class="card card-dark">
+                    <h3 id="mFat" class="text-cyan">0</h3>
+                    <p class="text-cyan">FATS</p>
+                </div>
+            </div>
+
+            <div class="mt-xl text-center">
+                <h4 class="text-gold">EXAMPLE MEAL STRUCTURE</h4>
+                <div class="card mt-md">
+                    <ul class="table text-left">
+                        <tr>
+                            <td><strong>Protein Source</strong></td>
+                            <td>Chicken, Eggs, Soya, Paneer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Carb Source</strong></td>
+                            <td>Rice, Roti, Oats, Potato</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fat Source</strong></td>
+                            <td>Oil, Ghee, Nuts, Yolk</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Vegetables</strong></td>
+                            <td>Unlimited Green Veggies (Fiber)</td>
+                        </tr>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        function plan() {
+            const daily = {
+                calories: parseFloat(document.getElementById('cal').value),
+                protein: parseFloat(document.getElementById('pro').value),
+                carbs: parseFloat(document.getElementById('carb').value),
+                fats: parseFloat(document.getElementById('fat').value)
+            };
+            const count = parseInt(document.getElementById('meals').value);
+
+            const perMeal = distributeMacros(daily, count);
+            const m = perMeal[0]; // All equal for now
+
+            document.getElementById('mCal').innerText = m.calories;
+            document.getElementById('mPro').innerText = m.protein + 'g';
+            document.getElementById('mCarb').innerText = m.carbs + 'g';
+            document.getElementById('mFat').innerText = m.fats + 'g';
+
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

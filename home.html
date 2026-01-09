@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ SURYA DIET - Complete Lifetime Health System</title>
+    <meta name="description"
+        content="Comprehensive health and fitness system with nutrition protocols, workout programs, calculators, and optimization guides for lifelong strength and vitality.">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .hero {
+            background: linear-gradient(180deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 0, 0, 0.1) 0%, transparent 50%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 1000px;
+            padding: var(--spacing-xl);
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 5rem;
+            color: var(--color-black);
+            text-shadow:
+                3px 3px 0px #FF6B00,
+                6px 6px 0px #FF4500,
+                9px 9px 0px #DC143C,
+                12px 12px 20px rgba(0, 0, 0, 0.4);
+            margin-bottom: var(--spacing-lg);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--color-black);
+            margin-bottom: var(--spacing-xl);
+            letter-spacing: 3px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            background: var(--gradient-dark);
+            color: var(--color-gold);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            border: 3px solid var(--color-black);
+            box-shadow: var(--shadow-lg);
+            min-width: 150px;
+        }
+
+        .hero-stat-number {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            display: block;
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .feature-card {
+            position: relative;
+            padding-top: 40px;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-md);
+            display: block;
+        }
+
+        .cta-section {
+            background: var(--gradient-dark);
+            padding: var(--spacing-2xl);
+            text-align: center;
+            border-radius: var(--radius-xl);
+            margin: var(--spacing-2xl) 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">⚡ SURYA DIET</div>
+            <button class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="nutrition/maintenance-protocol.html" class="nav-link">Nutrition</a></li>
+                <li><a href="training/strength-programs/intermediate-ppl.html" class="nav-link">Training</a></li>
+                <li><a href="tools/macro-calculator.html" class="nav-link">Tools</a></li>
+                <li><a href="optimization/longevity-guide.html" class="nav-link">Optimization</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">FATHER<br>STRENGTH</h1>
+            <p class="hero-subtitle">COMPLETE LIFETIME HEALTH SYSTEM</p>
+            <p
+                style="font-size: 1.2rem; color: var(--color-black); font-weight: 600; margin-bottom: var(--spacing-xl);">
+                Research-backed protocols for nutrition, training, recovery, and longevity
+            </p>
+            <div style="display: flex; gap: var(--spacing-md); justify-content: center; flex-wrap: wrap;">
+                <a href="education/user-guide.html" class="btn btn-primary"
+                    style="background: var(--color-white); color: var(--color-black); border-color: var(--color-gold);">
+                    <i class="fas fa-book"></i> Start Here: User Guide
+                </a>
+                <a href="nutrition/maintenance-protocol.html" class="btn btn-primary">
+                    <i class="fas fa-utensils"></i> Start Your Protocol
+                </a>
+                <a href="tools/macro-calculator.html" class="btn btn-secondary">
+                    <i class="fas fa-calculator"></i> Calculate Macros
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-number">50+</span>
+                    <span class="hero-stat-label">Protocols & Guides</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number">10+</span>
+                    <span class="hero-stat-label">Interactive Tools</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number">100%</span>
+                    <span class="hero-stat-label">Science-Backed</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="container-wide">
+
+        <!-- NUTRITION SECTION -->
+        <section class="section">
+            <h2 class="text-center text-gold"
+                style="font-family: var(--font-display); font-size: 3rem; margin-bottom: var(--spacing-xl);">
+                🥗 NUTRITION PROTOCOLS
+            </h2>
+
+            <div class="feature-grid">
+                <div class="card feature-card">
+                    <div class="card-number">1</div>
+                    <span class="feature-icon">🔥</span>
+                    <h3 class="card-header">Cutting Protocol</h3>
+                    <p>Lose fat while preserving muscle. 20% calorie deficit, high protein, strategic carb cycling.</p>
+                    <ul style="margin: var(--spacing-md) 0; list-style: none;">
+                        <li>💪 2.5g protein/kg</li>
+                        <li>📉 0.5-1% weight loss/week</li>
+                        <li>🔄 Weekly refeed days</li>
+                    </ul>
+                    <a href="nutrition/cutting-protocol.html" class="btn btn-primary"
+                        style="width: 100%; margin-top: var(--spacing-md);">
+                        View Protocol
+                    </a>
+                </div>
+
+                <div class="card feature-card">
+                    <div class="card-number">2</div>
+                    <span class="feature-icon">💪</span>
+                    <h3 class="card-header">Bulking Protocol</h3>
+                    <p>Build muscle efficiently. 15% calorie surplus, optimized macro timing, progressive nutrition.</p>
+                    <ul style="margin: var(--spacing-md) 0; list-style: none;">
+                        <li>🍖 2g protein/kg</li>
+                        <li>📈 0.25-0.5% weight gain/week</li>
+                        <li>⚡ Pre/post workout nutrition</li>
+                    </ul>
+                    <a href="nutrition/bulking-protocol.html" class="btn btn-primary"
+                        style="width: 100%; margin-top: var(--spacing-md);">
+                        View Protocol
+                    </a>
+                </div>
+
+                <div class="card feature-card">
+                    <div class="card-number">3</div>
+                    <span class="feature-icon">⚖️</span>
+                    <h3 class="card-header">Maintenance Protocol</h3>
+                    <p>Sustain your physique. Balanced macros, flexible eating, long-term sustainability.</p>
+                    <ul style="margin: var(--spacing-md) 0; list-style: none;">
+                        <li>🎯 2g protein/kg</li>
+                        <li>📊 ~2350 kcal daily</li>
+                        <li>🔄 Adaptable meal timing</li>
+                    </ul>
+                    <a href="nutrition/maintenance-protocol.html" class="btn btn-primary"
+                        style="width: 100%; margin-top: var(--spacing-md);">
+                        View Protocol
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid grid-2" style="margin-top: var(--spacing-xl);">
+                <div class="card">
+                    <h3 class="card-header">📚 Recipe Database</h3>
+                    <p>50+ high-protein recipes with complete nutritional breakdowns</p>
+                    <a href="nutrition/recipes/breakfast.html" class="btn btn-secondary"
+                        style="margin-top: var(--spacing-md);">Browse Recipes</a>
+                </div>
+                <div class="card">
+                    <h3 class="card-header">💊 Supplement Guide</h3>
+                    <p>Evidence-based supplement recommendations for performance & health</p>
+                    <a href="nutrition/supplements-guide.html" class="btn btn-secondary"
+                        style="margin-top: var(--spacing-md);">View Guide</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRAINING SECTION -->
+        <section class="section">
+            <h2 class="text-center text-gold"
+                style="font-family: var(--font-display); font-size: 3rem; margin-bottom: var(--spacing-xl);">
+                🏋️ TRAINING PROGRAMS
+            </h2>
+
+            <div class="feature-grid">
+                <div class="card feature-card">
+                    <div class="card-number">💪</div>
+                    <span class="feature-icon">🎯</span>
+                    <h3 class="card-header">Strength Programs</h3>
+                    <p>Progressive overload programs for all levels</p>
+                    <ul style="margin: var(--spacing-md) 0; list-style: none;">
+                        <li>🔰 Beginner: Starting Strength</li>
+                        <li>📊 Intermediate: PPL Split</li>
+                        <li>🏆 Advanced: Powerlifting</li>
+                    </ul>
+                    <a href="training/strength-programs/intermediate-ppl.html" class="btn btn-primary"
+                        style="width: 100%; margin-top: var(--spacing-md);">
+                        View Programs
+                    </a>
+                </div>
+
+                <div class="card feature-card">
+                    <div class="card-number">🏃</div>
+                    <span class="feature-icon">⚡</span>
+                    <h3 class="card-header">Cardio Protocols</h3>
+                    <p>Optimize cardiovascular health & fat loss</p>
+                    <ul style="margin: var(--spacing-md) 0; list-style: none;">
+                        <li>🔥 HIIT for fat loss</li>
+                        <li>💚 Zone 2 for longevity</li>
+                        <li>🚶 LISS for recovery</li>
+                    </ul>
+                    <a href="training/cardio-protocols/hiit.html" class="btn btn-primary"
+                        style="width: 100%; margin-top: var(--spacing-md);">
+                        View Protocols
+                    </a>
+                </div>
+
+                <div class="card feature-card">
+                    <div class="card-number">🧘</div>
+                    <span class="feature-icon">🌟</span>
+                    <h3 class="card-header">Mobility & Recovery</h3>
+                    <p>Prevent injury, improve performance</p>
+                    <ul style="margin: var(--spacing-md) 0; list-style: none;">
+                        <li>🤸 Daily stretching routines</li>
+                        <li>🧘 Yoga flows</li>
+                        <li>💆 Foam rolling guides</li>
+                    </ul>
+                    <a href="training/mobility/daily-stretching.html" class="btn btn-primary"
+                        style="width: 100%; margin-top: var(--spacing-md);">
+                        View Routines
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOOLS SECTION -->
+        <section class="section">
+            <h2 class="text-center text-gold"
+                style="font-family: var(--font-display); font-size: 3rem; margin-bottom: var(--spacing-xl);">
+                🛠️ INTERACTIVE TOOLS
+            </h2>
+
+            <div class="grid grid-4">
+                <div class="card text-center">
+                    <span class="feature-icon">📊</span>
+                    <h4>TDEE Calculator</h4>
+                    <p style="font-size: 0.9rem;">Calculate your daily calorie needs</p>
+                    <a href="tools/tdee-calculator.html" class="btn btn-secondary"
+                        style="margin-top: var(--spacing-md); width: 100%;">Calculate</a>
+                </div>
+
+                <div class="card text-center">
+                    <span class="feature-icon">🎯</span>
+                    <h4>Macro Calculator</h4>
+                    <p style="font-size: 0.9rem;">Get personalized macro targets</p>
+                    <a href="tools/macro-calculator.html" class="btn btn-secondary"
+                        style="margin-top: var(--spacing-md); width: 100%;">Calculate</a>
+                </div>
+
+                <div class="card text-center">
+                    <span class="feature-icon">📏</span>
+                    <h4>Body Fat Calculator</h4>
+                    <p style="font-size: 0.9rem;">Estimate body composition</p>
+                    <a href="tools/body-fat-calculator.html" class="btn btn-secondary"
+                        style="margin-top: var(--spacing-md); width: 100%;">Calculate</a>
+                </div>
+
+                <div class="card text-center">
+                    <span class="feature-icon">💪</span>
+                    <h4>1RM Calculator</h4>
+                    <p style="font-size: 0.9rem;">Calculate one-rep max</p>
+                    <a href="tools/one-rep-max-calculator.html" class="btn btn-secondary"
+                        style="margin-top: var(--spacing-md); width: 100%;">Calculate</a>
+                </div>
+            </div>
+
+            <div class="grid grid-2" style="margin-top: var(--spacing-xl);">
+                <div class="card">
+                    <h3 class="card-header">🍽️ Meal Planner</h3>
+                    <p>Create custom meal plans that hit your macro targets perfectly</p>
+                    <a href="tools/meal-planner.html" class="btn btn-primary"
+                        style="margin-top: var(--spacing-md);">Plan Meals</a>
+                </div>
+                <div class="card">
+                    <h3 class="card-header">📈 Progress Tracker</h3>
+                    <p>Track weight, measurements, strength, and visualize your progress</p>
+                    <a href="tools/progress-tracker.html" class="btn btn-primary"
+                        style="margin-top: var(--spacing-md);">Track Progress</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- OPTIMIZATION SECTION -->
+        <section class="section">
+            <h2 class="text-center text-gold"
+                style="font-family: var(--font-display); font-size: 3rem; margin-bottom: var(--spacing-xl);">
+                🚀 OPTIMIZATION GUIDES
+            </h2>
+
+            <div class="feature-grid">
+                <div class="card">
+                    <h3 class="card-header">😴 Sleep Protocol</h3>
+                    <p>Optimize sleep for recovery, performance, and longevity. 7-9 hours of quality sleep.</p>
+                    <a href="optimization/sleep-protocol.html" class="btn btn-outline"
+                        style="margin-top: var(--spacing-md);">Read Guide</a>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-header">🧬 Longevity Guide</h3>
+                    <p>Evidence-based strategies for healthspan and lifespan extension.</p>
+                    <a href="optimization/longevity-guide.html" class="btn btn-outline"
+                        style="margin-top: var(--spacing-md);">Read Guide</a>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-header">❄️ Biohacking</h3>
+                    <p>Cold exposure, sauna, breathwork, and advanced optimization techniques.</p>
+                    <a href="optimization/biohacking.html" class="btn btn-outline"
+                        style="margin-top: var(--spacing-md);">Read Guide</a>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-header">💊 Hormone Optimization</h3>
+                    <p>Natural strategies to optimize testosterone, thyroid, and metabolic hormones.</p>
+                    <a href="optimization/hormone-optimization.html" class="btn btn-outline"
+                        style="margin-top: var(--spacing-md);">Read Guide</a>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-header">🦠 Gut Health</h3>
+                    <p>Microbiome optimization for digestion, immunity, and overall health.</p>
+                    <a href="optimization/gut-health.html" class="btn btn-outline"
+                        style="margin-top: var(--spacing-md);">Read Guide</a>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-header">🧘 Stress Management</h3>
+                    <p>Reduce cortisol, improve resilience, and manage stress effectively.</p>
+                    <a href="optimization/stress-management.html" class="btn btn-outline"
+                        style="margin-top: var(--spacing-md);">Read Guide</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA SECTION -->
+        <section class="cta-section">
+            <h2
+                style="font-family: var(--font-display); font-size: 3rem; color: var(--color-gold); margin-bottom: var(--spacing-md);">
+                READY TO EXECUTE?
+            </h2>
+            <p
+                style="font-size: 1.3rem; margin-bottom: var(--spacing-xl); max-width: 700px; margin-left: auto; margin-right: auto;">
+                Start with your personalized nutrition protocol and macro calculations. Build strength, optimize health,
+                and achieve your lifetime fitness goals.
+            </p>
+            <div style="display: flex; gap: var(--spacing-md); justify-content: center; flex-wrap: wrap;">
+                <a href="tools/macro-calculator.html" class="btn btn-primary" style="font-size: 1.2rem;">
+                    <i class="fas fa-calculator"></i> Calculate Your Macros
+                </a>
+                <a href="nutrition/maintenance-protocol.html" class="btn btn-secondary" style="font-size: 1.2rem;">
+                    <i class="fas fa-utensils"></i> View Diet Protocol
+                </a>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer
+            style="text-align: center; padding: var(--spacing-2xl) 0; border-top: 3px solid var(--color-gold); margin-top: var(--spacing-2xl);">
+            <p
+                style="font-family: var(--font-display); font-size: 1.5rem; color: var(--color-gold); margin-bottom: var(--spacing-md);">
+                ⚡ SURYA DIET ⚡
+            </p>
+            <p style="font-size: 1rem; color: var(--color-light-gray);">
+                Complete Lifetime Health System • Science-Backed Protocols • Built for Results
+            </p>
+            <p style="font-size: 0.9rem; color: var(--color-medium-gray); margin-top: var(--spacing-md);">
+                NO EXCUSES. EXECUTE.
+            </p>
+        </footer>
+
+    </div>
+
+    <script src="assets/js/utils.js"></script>
+</body>
+
+</html>

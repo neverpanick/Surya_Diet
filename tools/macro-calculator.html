@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MACRO CALCULATOR - Surya Diet</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">⚡ SURYA DIET</div>
+            <ul class="nav-menu">
+                <li><a href="../../home.html" class="nav-link">Home</a></li>
+                <li><a href="../../nutrition/maintenance-protocol.html" class="nav-link">Nutrition</a></li>
+                <li><a href="../../training/strength-programs/intermediate-ppl.html" class="nav-link">Training</a></li>
+                <li><a href="#" class="nav-link active">Tools</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container container-narrow">
+
+        <header class="section text-center">
+            <h1 class="text-gold">MACRO CALCULATOR</h1>
+            <p class="text-white">Calculate your personalized calorie and macro targets based on the Surya Diet
+                protocols.</p>
+        </header>
+
+        <div class="card mb-xl">
+            <form id="macroForm">
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
+                        <select class="form-select" id="gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Age</label>
+                        <input type="number" class="form-input" id="age" value="30">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Weight (kg)</label>
+                        <input type="number" class="form-input" id="weight" value="75">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Height (cm)</label>
+                        <input type="number" class="form-input" id="height" value="175">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Activity Level</label>
+                        <select class="form-select" id="activity">
+                            <option value="sedentary">Sedentary (Office Job)</option>
+                            <option value="light">Light Active (1-2 days/week)</option>
+                            <option value="moderate" selected>Moderate (3-5 days/week)</option>
+                            <option value="active">Active (6-7 days/week)</option>
+                            <option value="very-active">Athlete (2x per day)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Goal</label>
+                        <select class="form-select" id="goal">
+                            <option value="maintenance">Maintenance (Recomp)</option>
+                            <option value="cutting">Cutting (Fat Loss)</option>
+                            <option value="bulking">Bulking (Muscle Gain)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="text-center mt-lg">
+                    <button type="button" class="btn btn-primary" onclick="calculate()">CALCULATE MACROS</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="results" class="card card-dark" style="display: none;">
+            <h2 class="text-center text-gold mb-lg">YOUR DAILY TARGETS</h2>
+
+            <div class="grid grid-4 text-center">
+                <div>
+                    <h3 class="text-white" id="resCalories">0</h3>
+                    <span class="badge badge-cal">CALORIES</span>
+                </div>
+                <div>
+                    <h3 class="text-green" id="resProtein">0g</h3>
+                    <span class="badge badge-pro">PROTEIN</span>
+                </div>
+                <div>
+                    <h3 class="text-gold" id="resCarbs">0g</h3>
+                    <span class="badge badge-carb">CARBS</span>
+                </div>
+                <div>
+                    <h3 class="text-cyan" id="resFats">0g</h3>
+                    <span class="badge badge-fat">FATS</span>
+                </div>
+            </div>
+
+            <div class="mt-xl">
+                <h4 class="text-orange text-center mb-md">Budget Sources Recommendation</h4>
+                <div class="grid grid-2">
+                    <div>
+                        <strong class="text-green">PROTEIN:</strong><br>
+                        Eggs, Soya Chunks, Chicken Breast, Whey.
+                    </div>
+                    <div>
+                        <strong class="text-gold">CARBS:</strong><br>
+                        Rice, Ragi, Oats, Bananas, Potatoes.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        function calculate() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const age = parseFloat(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const activity = document.getElementById('activity').value;
+            const goal = document.getElementById('goal').value;
+
+            // Use utility function
+            const tdeeData = calculateTDEE(weight, height, age, gender, activity);
+            const macros = calculateMacros(tdeeData.tdee, weight, goal);
+
+            // Update UI
+            document.getElementById('resCalories').innerText = macros.calories;
+            document.getElementById('resProtein').innerText = macros.protein + 'g';
+            document.getElementById('resCarbs').innerText = macros.carbs + 'g';
+            document.getElementById('resFats').innerText = macros.fats + 'g';
+
+            document.getElementById('results').style.display = 'block';
+
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>

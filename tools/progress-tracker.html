@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROGRESS TRACKER - Surya Diet</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">⚡ SURYA DIET</div>
+            <ul class="nav-menu">
+                <li><a href="../../home.html" class="nav-link">Home</a></li>
+                <li><a href="../../nutrition/maintenance-protocol.html" class="nav-link">Nutrition</a></li>
+                <li><a href="../../tools/macro-calculator.html" class="nav-link active">Tools</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container container-narrow">
+        <header class="section text-center">
+            <h1 class="text-gold">PROGRESS TRACKER</h1>
+            <p class="text-white">What gets measured gets managed. Log your weight daily.</p>
+        </header>
+
+        <div class="card mb-lg">
+            <div class="grid grid-2">
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" class="form-input" id="date">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Weight (kg)</label>
+                    <input type="number" class="form-input" id="weight" step="0.1">
+                </div>
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="logEntry()">LOG WEIGHT</button>
+        </div>
+
+        <div class="card card-dark">
+            <h3 class="text-gold mb-md">HISTORY</h3>
+            <div id="logList">
+                <!-- Entries will appear here -->
+            </div>
+            <button class="btn btn-outline mt-lg" onclick="clearData()">Clear All Data</button>
+        </div>
+
+    </div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        // Init Date
+        document.getElementById('date').valueAsDate = new Date();
+
+        function loadLog() {
+            const log = loadFromStorage('fs_weight_log') || [];
+            const container = document.getElementById('logList');
+            container.innerHTML = '';
+
+            if (log.length === 0) {
+                container.innerHTML = '<p class="text-center">No logs yet.</p>';
+                return;
+            }
+
+            // Simple table
+            let html = '<table class="table"><tr><th>Date</th><th>Weight</th></tr>';
+            log.sort((a, b) => new Date(b.date) - new Date(a.date)); // Descending
+            log.forEach(entry => {
+                html += `<tr><td>${formatDate(new Date(entry.date))}</td><td class="text-gold font-bold">${entry.weight} kg</td></tr>`;
+            });
+            html += '</table>';
+            container.innerHTML = html;
+        }
+
+        function logEntry() {
+            const date = document.getElementById('date').value;
+            const weight = document.getElementById('weight').value;
+
+            if (!weight || !date) return alert('Please fill all fields');
+
+            const log = loadFromStorage('fs_weight_log') || [];
+            log.push({ date, weight });
+            saveToStorage('fs_weight_log', log);
+
+            loadLog();
+            alert('Logged!');
+        }
+
+        function clearData() {
+            if (confirm('Delete all history?')) {
+                clearStorage('fs_weight_log');
+                loadLog();
+            }
+        }
+
+        loadLog();
+    </script>
+</body>
+
+</html>
