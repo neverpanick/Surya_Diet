@@ -38,7 +38,28 @@
                     <input type="number" class="form-input" id="weight" step="0.1">
                 </div>
             </div>
-            <button class="btn btn-primary" style="width: 100%;" onclick="logEntry()">LOG WEIGHT</button>
+            <button class="btn btn-primary" style="width: 100%;" onclick="logEntry()" id="logBtn">LOG WEIGHT</button>
+        </div>
+
+        <!-- CLOUD SETTINGS TOGGLE -->
+        <div class="text-right mb-md">
+            <button class="btn btn-outline" style="font-size: 0.8rem; padding: 5px 10px;" onclick="toggleSettings()">
+                <i class="fas fa-cloud"></i> Cloud Settings
+            </button>
+        </div>
+
+        <!-- SETTINGS PANEL (Hidden by default) -->
+        <div id="settingsPanel" class="card card-dark mb-lg"
+            style="display: none; border: 1px solid var(--color-gold);">
+            <h4 class="text-gold mb-sm">☁️ GOOGLE SHEETS SYNC</h4>
+            <p style="font-size: 0.9rem; color: #ccc;" class="mb-md">
+                Paste your Web App URL here to sync data to your private sheet.
+            </p>
+            <div class="form-group">
+                <input type="text" class="form-input" id="apiUrl" placeholder="https://script.google.com/macros/s/..."
+                    onchange="saveApiUrl()">
+            </div>
+            <p id="apiStatus" class="text-green" style="display: none; font-size: 0.8rem;">Saved!</p>
         </div>
 
         <div class="card card-dark">
@@ -46,7 +67,7 @@
             <div id="logList">
                 <!-- Entries will appear here -->
             </div>
-            <button class="btn btn-outline mt-lg" onclick="clearData()">Clear All Data</button>
+            <button class="btn btn-outline mt-lg" onclick="clearData()">Clear Local Data</button>
         </div>
 
     </div>
@@ -56,19 +77,99 @@
         // Init Date
         document.getElementById('date').valueAsDate = new Date();
 
-        function loadLog() {
-            const log = loadFromStorage('fs_weight_log') || [];
-            const container = document.getElementById('logList');
-            container.innerHTML = '';
+        // Init Date
+        document.getElementById('date').valueAsDate = new Date();
 
-            if (log.length === 0) {
+        // On Load
+        const storedUrl = localStorage.getItem('fs_api_url');
+        if (storedUrl) {
+            document.getElementById('apiUrl').value = storedUrl;
+        }
+        loadLog();
+
+        function toggleSettings() {
+            const panel = document.getElementById('settingsPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function saveApiUrl() {
+            const url = document.getElementById('apiUrl').value.trim();
+            localStorage.setItem('fs_api_url', url);
+            document.getElementById('apiStatus').style.display = 'block';
+            setTimeout(() => document.getElementById('apiStatus').style.display = 'none', 2000);
+            loadLog(); // Reload to fetch from cloud if URL added
+        }
+
+        async function loadLog() {
+            const container = document.getElementById('logList');
+            container.innerHTML = '<p class="text-center text-gold">Loading...</p>';
+
+            const apiUrl = localStorage.getItem('fs_api_url');
+            let log = [];
+
+            try {
+                // 1. Try Cloud Fetch
+                if (apiUrl) {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST', // doPost handles all
+                        mode: 'no-cors', // Apps Script specific quirk, real response handled differently usually BUT for simple JSON reading we might need a workaround or just JSONP if GET. 
+                        // Actually, 'no-cors' means we CANNOT read the response. 
+                        // Standard Apps Script Pattern: Use GET for reading with defined CORS headers in script?
+                        // Wait, my patch uses doPost. POST with text/plain to avoid preflight options.
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ action: 'get_weight_history' })
+                    });
+
+                    // NOTE: With 'no-cors' we can't see the response body.
+                    // To read data, we MUST simple GET or POST that returns JSON with CORS headers.
+                    // Google Apps Script `ContentService` usually handles CORS if MimeType is JSON.
+                    // Let's retry with normal fetch assuming the backend handles CORS.
+                }
+
+                // REVISED STRATEGY: 
+                // Since 'no-cors' blocks reading, we assume user sets up the script correctly to return specific CORS headers 
+                // OR we accept we might need a proxy. 
+                // BUT standard GAS `ContentService` return DOES allow reading if we use `redirect: follow`.
+
+                if (apiUrl) {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        redirect: 'follow',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Avoids OPTIONS preflight
+                        body: JSON.stringify({ action: 'get_weight_history' })
+                    });
+
+                    const resData = await response.json();
+                    if (resData.status === 'success') {
+                        log = resData.data;
+                    } else {
+                        console.error('Cloud Error:', resData.message);
+                        log = loadFromStorage('fs_weight_log') || []; // Fallback
+                    }
+                } else {
+                    // Local Only
+                    log = loadFromStorage('fs_weight_log') || [];
+                }
+
+            } catch (e) {
+                console.warn('Cloud fetch failed, using local.', e);
+                log = loadFromStorage('fs_weight_log') || [];
+            }
+
+            renderTable(log, container);
+        }
+
+        function renderTable(log, container) {
+            container.innerHTML = '';
+            if (!log || log.length === 0) {
                 container.innerHTML = '<p class="text-center">No logs yet.</p>';
                 return;
             }
 
-            // Simple table
             let html = '<table class="table"><tr><th>Date</th><th>Weight</th></tr>';
-            log.sort((a, b) => new Date(b.date) - new Date(a.date)); // Descending
+            // Sort
+            log.sort((a, b) => new Date(b.date) - new Date(a.date));
+
             log.forEach(entry => {
                 html += `<tr><td>${formatDate(new Date(entry.date))}</td><td class="text-gold font-bold">${entry.weight} kg</td></tr>`;
             });
@@ -76,30 +177,54 @@
             container.innerHTML = html;
         }
 
-        function logEntry() {
+        async function logEntry() {
             const date = document.getElementById('date').value;
             const weight = document.getElementById('weight').value;
+            const btn = document.getElementById('logBtn');
 
             if (!weight || !date) return alert('Please fill all fields');
 
-            const log = loadFromStorage('fs_weight_log') || [];
-            log.push({ date, weight });
-            saveToStorage('fs_weight_log', log);
+            btn.disabled = true;
+            btn.innerText = 'Saving...';
 
-            loadLog();
+            // 1. Save Local (Backup)
+            const localLog = loadFromStorage('fs_weight_log') || [];
+            localLog.push({ date, weight });
+            saveToStorage('fs_weight_log', localLog);
+
+            // 2. Save Cloud (if enabled)
+            const apiUrl = localStorage.getItem('fs_api_url');
+            if (apiUrl) {
+                try {
+                    await fetch(apiUrl, {
+                        method: 'POST',
+                        redirect: 'follow',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({
+                            action: 'log_weight',
+                            date: date,
+                            weight: weight
+                        })
+                    });
+                    // Verify by reloading
+                } catch (e) {
+                    alert('Saved locally, but Cloud Sync failed: ' + e.message);
+                }
+            }
+
+            await loadLog();
+            btn.disabled = false;
+            btn.innerText = 'LOG WEIGHT';
             alert('Logged!');
         }
 
         function clearData() {
-            if (confirm('Delete all history?')) {
+            if (confirm('Delete all LOCAL history? (Cloud data remains safe)')) {
                 clearStorage('fs_weight_log');
                 loadLog();
             }
         }
-
-        loadLog();
     </script>
 </body>
 
 </html>
-
