@@ -1,5 +1,5 @@
 // ============================================
-// FATHER STRENGTH - UTILITY FUNCTIONS
+// SURYA DIET - UTILITY FUNCTIONS
 // ============================================
 
 // ============================================
@@ -23,7 +23,7 @@ function calculateTDEE(weight, height, age, gender, activityLevel) {
     } else {
         bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
     }
-    
+
     const activityMultipliers = {
         'sedentary': 1.2,
         'light': 1.375,
@@ -31,9 +31,9 @@ function calculateTDEE(weight, height, age, gender, activityLevel) {
         'active': 1.725,
         'very-active': 1.9
     };
-    
+
     const tdee = bmr * activityMultipliers[activityLevel];
-    
+
     return {
         bmr: Math.round(bmr),
         tdee: Math.round(tdee)
@@ -49,22 +49,22 @@ function calculateTDEE(weight, height, age, gender, activityLevel) {
  */
 function calculateMacros(tdee, weight, goal) {
     let calories, protein, carbs, fats;
-    
-    switch(goal) {
+
+    switch (goal) {
         case 'cutting':
             calories = Math.round(tdee * 0.8); // 20% deficit
             protein = Math.round(weight * 2.5); // 2.5g/kg
             fats = Math.round(weight * 0.9); // 0.9g/kg
             carbs = Math.round((calories - (protein * 4) - (fats * 9)) / 4);
             break;
-            
+
         case 'bulking':
             calories = Math.round(tdee * 1.15); // 15% surplus
             protein = Math.round(weight * 2); // 2g/kg
             fats = Math.round(weight * 1); // 1g/kg
             carbs = Math.round((calories - (protein * 4) - (fats * 9)) / 4);
             break;
-            
+
         case 'maintenance':
         default:
             calories = tdee;
@@ -72,12 +72,16 @@ function calculateMacros(tdee, weight, goal) {
             fats = Math.round(weight * 1); // 1g/kg
             carbs = Math.round((calories - (protein * 4) - (fats * 9)) / 4);
     }
-    
+
+    // Fiber calculation (14g per 1000kcal)
+    const fiber = Math.round((calories / 1000) * 14);
+
     return {
         calories,
         protein,
         carbs,
-        fats
+        fats,
+        fiber
     };
 }
 
@@ -96,13 +100,13 @@ function calculateMacros(tdee, weight, goal) {
  */
 function calculateBodyFat(gender, height, neck, waist, hip = 0) {
     let bodyFat;
-    
+
     if (gender === 'male') {
         bodyFat = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(height)) - 450;
     } else {
         bodyFat = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.22100 * Math.log10(height)) - 450;
     }
-    
+
     return Math.round(bodyFat * 10) / 10;
 }
 
@@ -115,7 +119,7 @@ function calculateBodyFat(gender, height, neck, waist, hip = 0) {
 function calculateLeanMass(weight, bodyFatPercentage) {
     const fatMass = weight * (bodyFatPercentage / 100);
     const leanMass = weight - fatMass;
-    
+
     return {
         leanMass: Math.round(leanMass * 10) / 10,
         fatMass: Math.round(fatMass * 10) / 10
@@ -164,7 +168,7 @@ function distributeMacros(dailyMacros, numMeals) {
         carbs: Math.round(dailyMacros.carbs / numMeals),
         fats: Math.round(dailyMacros.fats / numMeals)
     };
-    
+
     return Array(numMeals).fill(perMeal);
 }
 
@@ -183,7 +187,7 @@ function calculateWeightChange(startWeight, currentWeight, weeks) {
     const totalChange = currentWeight - startWeight;
     const weeklyRate = totalChange / weeks;
     const percentageChange = (totalChange / startWeight) * 100;
-    
+
     return {
         totalChange: Math.round(totalChange * 10) / 10,
         weeklyRate: Math.round(weeklyRate * 100) / 100,
@@ -337,7 +341,7 @@ function daysBetween(date1, date2) {
 function initMobileMenu() {
     const toggle = document.querySelector('.nav-toggle');
     const menu = document.querySelector('.nav-menu');
-    
+
     if (toggle && menu) {
         toggle.addEventListener('click', () => {
             menu.classList.toggle('active');

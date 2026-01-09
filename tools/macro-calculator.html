@@ -83,7 +83,7 @@
         <div id="results" class="card card-dark" style="display: none;">
             <h2 class="text-center text-gold mb-lg">YOUR DAILY TARGETS</h2>
 
-            <div class="grid grid-4 text-center">
+            <div class="grid grid-5 text-center">
                 <div>
                     <h3 class="text-white" id="resCalories">0</h3>
                     <span class="badge badge-cal">CALORIES</span>
@@ -100,9 +100,24 @@
                     <h3 class="text-cyan" id="resFats">0g</h3>
                     <span class="badge badge-fat">FATS</span>
                 </div>
+                <div>
+                    <h3 class="text-white" id="resFiber">0g</h3>
+                    <span class="badge badge-pro" style="background: var(--color-orange);">FIBER</span>
+                </div>
             </div>
 
             <div class="mt-xl">
+                <div class="card mb-md" style="background: rgba(255,255,255,0.05);">
+                    <h4 class="text-orange text-center">WHY DO I NEED <span id="fiberTargetText">THIS MUCH</span> FIBER?
+                    </h4>
+                    <p class="text-center mt-sm">
+                        This target (14g per 1000 calories) is crucial for:
+                        <br>✅ <strong>Gut Health:</strong> Keeps digestion regular.
+                        <br>✅ <strong>Blood Sugar:</strong> Prevents energy crashes after rice/carbs.
+                        <br>✅ <strong>Longevity:</strong> Lowers cholesterol and heart risk.
+                    </p>
+                </div>
+
                 <h4 class="text-orange text-center mb-md">Budget Sources Recommendation</h4>
                 <div class="grid grid-2">
                     <div>
@@ -138,6 +153,7 @@
             document.getElementById('resProtein').innerText = macros.protein + 'g';
             document.getElementById('resCarbs').innerText = macros.carbs + 'g';
             document.getElementById('resFats').innerText = macros.fats + 'g';
+            document.getElementById('resFiber').innerText = macros.fiber + 'g';
 
             document.getElementById('results').style.display = 'block';
 
@@ -148,4 +164,3 @@
 </body>
 
 </html>
-
