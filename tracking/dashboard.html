@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIFE OS DASHBOARD - Surya Diet</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .task-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .task-card.completed {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1));
+            border-color: var(--color-green);
+        }
+
+        .task-card i {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--color-gold);
+        }
+
+        .task-card.completed i {
+            color: var(--color-green);
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: var(--card-bg-dark);
+            padding: 15px;
+            border-radius: 8px;
+            border-bottom: 2px solid var(--color-gold);
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-green);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">⚡ SURYA LIFE OS</div>
+            <ul class="nav-menu">
+                <li><a href="../../index.html" class="nav-link">Home</a></li>
+                <li><a href="workout-logger.html" class="nav-link">Workout</a></li>
+                <li><a href="nutrition-diary.html" class="nav-link">Nutrition</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container container-medium">
+
+        <!-- STATS HEADER -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-val" id="levelDisplay">-</div>
+                <div class="stat-label">Level</div>
+            </div>
+            <div class="stat-item" style="flex-grow: 1; margin: 0 20px;">
+                <div class="flex justify-between text-xs text-gold mb-xs">
+                    <span>DAILY PROGRESS</span>
+                    <span id="progressText">0%</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+                <div class="text-center mt-xs text-xs text-muted" id="aiMsg">AI: "Loading..."</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-val text-orange" id="streakDisplay">0</div>
+                <div class="stat-label">Streak</div>
+            </div>
+        </div>
+
+        <!-- API STATUS -->
+        <div id="apiStatusPanel" class="text-center mb-md" style="display:none;">
+            <span class="badge badge-pro" style="background:var(--color-red)">⚠️ API DISCONNECTED</span>
+            <p class="text-xs mt-sm"><a href="../../tools/progress-tracker.html" class="text-gold">Click here to Connect
+                    Google Sheets</a></p>
+        </div>
+
+        <!-- TASKS GRID -->
+        <div class="task-grid" id="taskGrid">
+            <!-- JS will populate this -->
+            <p class="text-center w-full">Loading System...</p>
+        </div>
+
+        <!-- NOTES -->
+        <div class="card mt-lg">
+            <h3 class="text-gold mb-sm">📝 Daily Notes</h3>
+            <textarea id="dailyNotes" class="form-input" rows="3" placeholder="How was your day?"></textarea>
+            <button class="btn btn-outline mt-sm" onclick="saveNotes()">Save Notes</button>
+        </div>
+
+    </div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        const API_URL = localStorage.getItem('fs_api_url');
+
+        // Task Definitions (Must match Apps Script)
+        const TASKS = [
+            { id: "WAKE", label: "Wake 6AM", icon: "fa-sun" },
+            { id: "CHORES", label: "Chores", icon: "fa-broom" },
+            { id: "VLOG", label: "Vlog", icon: "fa-video" },
+            { id: "GYM", label: "Gym", icon: "fa-dumbbell" },
+            { id: "BREAKFAST", label: "Breakfast", icon: "fa-coffee" },
+            { id: "COMMUTE", label: "Commute", icon: "fa-car" },
+            { id: "WORK_AM", label: "Work AM", icon: "fa-briefcase" },
+            { id: "LUNCH", label: "Lunch", icon: "fa-utensils" },
+            { id: "WORK_PM", label: "Work PM", icon: "fa-laptop" },
+            { id: "RESET", label: "Eve Reset", icon: "fa-couch" },
+            { id: "UPSKILL", label: "Upskill", icon: "fa-book-reader" },
+            { id: "WIND_DOWN", label: "Wind Down", icon: "fa-moon" },
+            { id: "WATER", label: "4L Water", icon: "fa-tint" },
+            { id: "BOOK", label: "Read", icon: "fa-book" },
+            { id: "SUPPLEMENT", label: "Vitamins", icon: "fa-pills" },
+            { id: "HEALTHY_DRINK", label: "Health Drink", icon: "fa-glass-water" }
+        ];
+
+        let currentStatus = {};
+
+        // INIT
+        if (!API_URL) {
+            document.getElementById('apiStatusPanel').style.display = 'block';
+            document.getElementById('taskGrid').innerHTML = '<p class="text-center text-red">Please connect API first.</p>';
+        } else {
+            loadDashboard();
+        }
+
+        async function loadDashboard() {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'get_today_state' })
+                });
+                const res = await response.json();
+
+                if (res.status === 'success') {
+                    currentStatus = res.statusData; // Note: Apps Script sends 'statusData' to avoid conflict
+                    renderTasks();
+                    updateStats(res.stats);
+                    if (res.dailyNotes) document.getElementById('dailyNotes').value = res.dailyNotes;
+                    document.getElementById('aiMsg').innerText = "System Active";
+                } else {
+                    console.error("API Error", res);
+                }
+            } catch (e) {
+                console.error(e);
+                document.getElementById('taskGrid').innerHTML = '<p class="text-center text-red">Sync Error. Check connection.</p>';
+            }
+        }
+
+        function renderTasks() {
+            const grid = document.getElementById('taskGrid');
+            grid.innerHTML = '';
+
+            TASKS.forEach(task => {
+                const isDone = !!currentStatus[task.id];
+
+                const card = document.createElement('div');
+                card.className = `task-card ${isDone ? 'completed' : ''}`;
+                card.onclick = () => toggleTask(task.id, !isDone);
+
+                card.innerHTML = `
+                    <i class="fas ${task.icon}"></i>
+                    <div class="text-sm font-bold ${isDone ? 'text-white' : 'text-muted'}">${task.label}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        async function toggleTask(id, newState) {
+            // Optimistic Update
+            currentStatus[id] = newState;
+            renderTasks();
+            updateProgressLocal();
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'set_task_state', id: id, state: newState })
+                });
+                const res = await response.json();
+                if (!res.success) {
+                    // Revert on failure
+                    currentStatus[id] = !newState;
+                    renderTasks();
+                    alert("Failed to sync");
+                }
+                if (res.aiMessage) {
+                    document.getElementById('aiMsg').innerText = "AI: " + res.aiMessage;
+                }
+            } catch (e) {
+                console.error(e);
+                // Revert
+                currentStatus[id] = !newState;
+                renderTasks();
+            }
+        }
+
+        function updateStats(stats) {
+            if (!stats) return;
+            document.getElementById('levelDisplay').innerText = stats.level || 1;
+            document.getElementById('streakDisplay').innerText = stats.streak || 0;
+
+            // Progress Bar
+            const pct = stats.progress || 0; // Or calculate locally
+            document.getElementById('progressText').innerText = pct + '%';
+            document.getElementById('progressBar').style.width = pct + '%';
+        }
+
+        function updateProgressLocal() {
+            const total = TASKS.length;
+            const done = TASKS.filter(t => currentStatus[t.id]).length;
+            const pct = Math.round((done / total) * 100);
+
+            document.getElementById('progressText').innerText = pct + '%';
+            document.getElementById('progressBar').style.width = pct + '%';
+        }
+
+        async function saveNotes() {
+            const notes = document.getElementById('dailyNotes').value;
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'set_daily_notes', notes: notes })
+                });
+                alert("Notes Saved");
+            } catch (e) {
+                alert("Error saving notes");
+            }
+        }
+    </script>
+</body>
+
+</html>

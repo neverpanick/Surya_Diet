@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORKOUT LOGGER - Surya Diet</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gym-mode {
+            border: 2px solid var(--color-orange);
+            background: rgba(249, 115, 22, 0.05);
+        }
+
+        .history-item {
+            border-left: 3px solid var(--color-gold);
+            margin-bottom: 10px;
+            padding: 10px;
+            background: var(--card-bg-dark);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">⚡ SURYA DIET</div>
+            <ul class="nav-menu">
+                <li><a href="../../index.html" class="nav-link">Home</a></li>
+                <li><a href="../../training/strength-programs/intermediate-ppl.html"
+                        class="nav-link active">Training</a></li>
+                <li><a href="../../tools/progress-tracker.html" class="nav-link">Tracker</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container container-narrow">
+        <header class="section text-center">
+            <h1 class="text-orange">WORKOUT LOGGER</h1>
+            <p class="text-white">Track your lifts. Progressive overload is key.</p>
+        </header>
+
+        <!-- API STATUS -->
+        <div id="apiStatusPanel" class="text-center mb-md" style="display:none;">
+            <span class="badge badge-pro" style="background:var(--color-red)">⚠️ API DISCONNECTED</span>
+            <p class="text-xs mt-sm"><a href="../../tools/progress-tracker.html" class="text-gold">Go to Progress
+                    Tracker to set API URL</a></p>
+        </div>
+
+        <!-- LOGGING FORM -->
+        <div class="card gym-mode mb-lg">
+            <h3 class="text-orange mb-md"><i class="fas fa-dumbbell"></i> LOG SET</h3>
+
+            <div class="form-group">
+                <label class="form-label">Exercise Name</label>
+                <input type="text" id="exercise" class="form-input" placeholder="e.g. Bench Press" list="exerciseList">
+                <datalist id="exerciseList">
+                    <option value="Squat">
+                    <option value="Bench Press">
+                    <option value="Deadlift">
+                    <option value="Overhead Press">
+                    <option value="Pull Up">
+                    <option value="Dumbbell Row">
+                    <option value="Incline DB Press">
+                    <option value="Lat Pulldown">
+                    <option value="Leg Press">
+                    <option value="Tricep Pushdown">
+                    <option value="Bicep Curl">
+                    <option value="Face Pull">
+                </datalist>
+            </div>
+
+            <div class="grid grid-3">
+                <div class="form-group">
+                    <label class="form-label">Weight (kg)</label>
+                    <input type="number" id="weight" class="form-input" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Reps</label>
+                    <input type="number" id="reps" class="form-input" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Sets</label>
+                    <input type="number" id="sets" class="form-input" value="1">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Notes (Optional)</label>
+                <input type="text" id="notes" class="form-input" placeholder="e.g. RPE 8, felt heavy">
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%;" onclick="logWorkout()" id="logBtn">LOG SET</button>
+        </div>
+
+        <!-- RECENT HISTORY -->
+        <div class="card card-dark">
+            <div class="flex justify-between align-center mb-md">
+                <h3 class="text-gold">RECENT LIFTS</h3>
+                <button class="btn btn-outline" style="font-size: 0.7rem; padding: 4px 8px;"
+                    onclick="loadHistory()">REFRESH</button>
+            </div>
+            <div id="historyList">
+                <p class="text-center text-muted">Loading...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        const API_URL = localStorage.getItem('fs_api_url');
+
+        // On Load
+        if (!API_URL) {
+            document.getElementById('apiStatusPanel').style.display = 'block';
+            document.getElementById('logBtn').disabled = true;
+        } else {
+            loadHistory();
+        }
+
+        async function logWorkout() {
+            const exercise = document.getElementById('exercise').value;
+            const weight = document.getElementById('weight').value;
+            const reps = document.getElementById('reps').value;
+            const sets = document.getElementById('sets').value;
+            const notes = document.getElementById('notes').value;
+            const btn = document.getElementById('logBtn');
+
+            if (!exercise || !weight || !reps) return alert('Please fill required fields (Exercise, Weight, Reps)');
+
+            btn.disabled = true;
+            btn.innerText = 'SAVING...';
+
+            try {
+                // 1. Log to Cloud
+                await fetch(API_URL, {
+                    method: 'POST',
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'log_workout',
+                        date: new Date().toISOString().split('T')[0],
+                        exercise: exercise,
+                        weight: weight,
+                        reps: reps,
+                        sets: sets,
+                        notes: notes
+                    })
+                });
+
+                // 2. Clear Inputs (Keep Exercise name for convenience of next set?)
+                // Let's clear reps/weight/notes but keep exercise maybe? 
+                // No, standard loggers usually clear or keep all. Let's clear numeric values.
+                // document.getElementById('exercise').value = ''; 
+                // Actually keeping exercise is better for multiple sets logging.
+                document.getElementById('reps').value = '';
+                // document.getElementById('weight').value = ''; // Keep weight too usually
+                document.getElementById('notes').value = '';
+
+                // 3. Refresh History
+                await loadHistory();
+
+                alert('Set Logged!');
+
+            } catch (e) {
+                alert('Error: ' + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'LOG SET';
+            }
+        }
+
+        async function loadHistory() {
+            if (!API_URL) return;
+            const list = document.getElementById('historyList');
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'get_workout_history' })
+                });
+
+                const res = await response.json();
+
+                if (res.status === 'success') {
+                    renderHistory(res.data);
+                } else {
+                    list.innerHTML = '<p class="text-center text-red">Failed to load history</p>';
+                }
+
+            } catch (e) {
+                console.error(e);
+                list.innerHTML = '<p class="text-center text-muted">Offline or Sync Error</p>';
+            }
+        }
+
+        function renderHistory(data) {
+            const list = document.getElementById('historyList');
+            list.innerHTML = '';
+
+            if (!data || data.length === 0) {
+                list.innerHTML = '<p class="text-center text-muted">No logs yet.</p>';
+                return;
+            }
+
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'history-item';
+                div.innerHTML = `
+                    <div class="flex justify-between">
+                        <span class="font-bold text-white">${item.exercise}</span>
+                        <span class="text-gold text-xs">${item.date}</span>
+                    </div>
+                    <div class="flex justify-between mt-xs text-sm">
+                        <span>${item.weight}kg x ${item.reps} reps</span>
+                        <span class="text-muted">${item.sets} sets</span>
+                    </div>
+                    ${item.notes ? `<div class="text-xs text-muted mt-xs">📝 ${item.notes}</div>` : ''}
+                `;
+                list.appendChild(div);
+            });
+        }
+    </script>
+</body>
+
+</html>

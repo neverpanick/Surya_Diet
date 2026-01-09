@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUTRITION DIARY - Surya Diet</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .meal-log {
+            border: 2px solid var(--color-green);
+            background: rgba(34, 197, 94, 0.05);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">⚡ SURYA DIET</div>
+            <ul class="nav-menu">
+                <li><a href="../../index.html" class="nav-link">Home</a></li>
+                <li><a href="../../nutrition/maintenance-protocol.html" class="nav-link">Nutrition</a></li>
+                <li><a href="../../tools/progress-tracker.html" class="nav-link active">Tracker</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container container-narrow">
+        <header class="section text-center">
+            <h1 class="text-green">NUTRITION DIARY</h1>
+            <p class="text-white">Eat clean. Train dirty.</p>
+        </header>
+
+        <!-- API STATUS -->
+        <div id="apiStatusPanel" class="text-center mb-md" style="display:none;">
+            <span class="badge badge-pro" style="background:var(--color-red)">⚠️ API DISCONNECTED</span>
+            <p class="text-xs mt-sm"><a href="../../tools/progress-tracker.html" class="text-gold">Go to Progress
+                    Tracker to set API URL</a></p>
+        </div>
+
+        <!-- LOGGING FORM -->
+        <div class="card meal-log mb-lg">
+            <h3 class="text-green mb-md"><i class="fas fa-utensils"></i> LOG MEAL</h3>
+
+            <div class="grid grid-2">
+                <div class="form-group">
+                    <label class="form-label">Meal Type</label>
+                    <select id="mealType" class="form-input">
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Dinner">Dinner</option>
+                        <option value="Snack">Snack</option>
+                        <option value="Pre-Workout">Pre-Workout</option>
+                        <option value="Post-Workout">Post-Workout</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Food Item</label>
+                    <input type="text" id="food" class="form-input" placeholder="e.g. Chicken Rice">
+                </div>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="form-group">
+                    <label class="form-label">Calories</label>
+                    <input type="number" id="cals" class="form-input" placeholder="kcal">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Protein (g)</label>
+                    <input type="number" id="protein" class="form-input" placeholder="g">
+                </div>
+            </div>
+
+            <div class="grid grid-3">
+                <div class="form-group">
+                    <label class="form-label">Carbs</label>
+                    <input type="number" id="carbs" class="form-input" placeholder="g">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Fats</label>
+                    <input type="number" id="fats" class="form-input" placeholder="g">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Fiber</label>
+                    <input type="number" id="fiber" class="form-input" placeholder="g">
+                </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%;" onclick="logMeal()" id="logBtn">LOG MEAL</button>
+        </div>
+
+        <!-- RECENT HISTORY -->
+        <div class="card card-dark">
+            <div class="flex justify-between align-center mb-md">
+                <h3 class="text-gold">RECENT MEALS</h3>
+                <button class="btn btn-outline" style="font-size: 0.7rem; padding: 4px 8px;"
+                    onclick="loadHistory()">REFRESH</button>
+            </div>
+            <div id="historyList">
+                <p class="text-center text-muted">Loading...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../../assets/js/utils.js"></script>
+    <script>
+        const API_URL = localStorage.getItem('fs_api_url');
+
+        if (!API_URL) {
+            document.getElementById('apiStatusPanel').style.display = 'block';
+            document.getElementById('logBtn').disabled = true;
+        } else {
+            loadHistory();
+        }
+
+        async function logMeal() {
+            const meal = document.getElementById('mealType').value;
+            const food = document.getElementById('food').value;
+            const cals = document.getElementById('cals').value || 0;
+            const protein = document.getElementById('protein').value || 0;
+            const carbs = document.getElementById('carbs').value || 0;
+            const fats = document.getElementById('fats').value || 0;
+            const fiber = document.getElementById('fiber').value || 0;
+            const btn = document.getElementById('logBtn');
+
+            if (!food) return alert('Please enter food name');
+
+            btn.disabled = true;
+            btn.innerText = 'SAVING...';
+
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'log_nutrition',
+                        date: new Date().toISOString().split('T')[0],
+                        meal: meal,
+                        foodItem: food,
+                        calories: cals,
+                        protein: protein,
+                        carbs: carbs,
+                        fats: fats,
+                        fiber: fiber,
+                        notes: ''
+                    })
+                });
+
+                document.getElementById('food').value = '';
+                document.getElementById('cals').value = '';
+                document.getElementById('protein').value = '';
+                document.getElementById('carbs').value = '';
+                document.getElementById('fats').value = '';
+                document.getElementById('fiber').value = '';
+
+                await loadHistory();
+                alert('Meal Logged!');
+
+            } catch (e) {
+                alert('Error: ' + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'LOG MEAL';
+            }
+        }
+
+        async function loadHistory() {
+            if (!API_URL) return;
+            const list = document.getElementById('historyList');
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'get_nutrition_history' })
+                });
+
+                const res = await response.json();
+
+                if (res.status === 'success') {
+                    renderHistory(res.data);
+                } else {
+                    list.innerHTML = '<p class="text-center text-red">Failed to load history</p>';
+                }
+
+            } catch (e) {
+                console.error(e);
+                list.innerHTML = '<p class="text-center text-muted">Offline or Sync Error</p>';
+            }
+        }
+
+        function renderHistory(data) {
+            const list = document.getElementById('historyList');
+            list.innerHTML = '';
+
+            if (!data || data.length === 0) {
+                list.innerHTML = '<p class="text-center text-muted">No logs yet.</p>';
+                return;
+            }
+
+            // Sort desc
+            data.reverse();
+
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'mb-sm p-sm bg-darker rounded border-left-green';
+                div.style.borderLeft = '3px solid var(--color-green)';
+                div.style.background = 'rgba(255,255,255,0.03)';
+                div.style.padding = '10px';
+
+                div.innerHTML = `
+                    <div class="flex justify-between">
+                        <span class="font-bold text-white">${item.meal}: ${item.foodItem}</span>
+                        <span class="text-muted text-xs">${item.date}</span>
+                    </div>
+                    <div class="flex justify-between mt-xs text-sm text-gold">
+                        <span>${item.calories} kcal</span>
+                        <span class="text-xs text-cyan">P: ${item.protein}g | C: ${item.carbs}g | F: ${item.fats}g</span>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }
+    </script>
+</body>
+
+</html>
