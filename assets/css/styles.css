@@ -1,5 +1,5 @@
 /* ============================================
-   FATHER STRENGTH - GLOBAL STYLES
+   SURYA DIET - GLOBAL STYLES
    Shared CSS Framework for All Pages
    ============================================ */
 
@@ -16,20 +16,20 @@
     --color-fire-orange: #FF6B00;
     --color-red-orange: #FF4500;
     --color-crimson: #DC143C;
-    
+
     /* Colors - Neutrals */
     --color-black: #000000;
     --color-dark-gray: #1a1a1a;
     --color-medium-gray: #2d2d2d;
     --color-light-gray: #f5f5f5;
     --color-white: #ffffff;
-    
+
     /* Colors - Accents */
     --color-green: #00ff88;
     --color-green-dark: #00cc6a;
     --color-cyan: #00d4ff;
     --color-cyan-dark: #0099cc;
-    
+
     /* Gradients */
     --gradient-primary: linear-gradient(180deg, var(--color-gold) 0%, var(--color-orange) 50%, var(--color-deep-orange) 100%);
     --gradient-dark: linear-gradient(135deg, var(--color-dark-gray) 0%, var(--color-black) 100%);
@@ -37,12 +37,12 @@
     --gradient-gold: linear-gradient(145deg, var(--color-gold), var(--color-orange));
     --gradient-green: linear-gradient(135deg, var(--color-green), var(--color-green-dark));
     --gradient-cyan: linear-gradient(135deg, var(--color-cyan), var(--color-cyan-dark));
-    
+
     /* Typography */
     --font-display: 'Black Ops One', cursive;
     --font-heading: 'Bebas Neue', cursive;
     --font-body: 'Inter', sans-serif;
-    
+
     /* Spacing */
     --spacing-xs: 4px;
     --spacing-sm: 8px;
@@ -50,14 +50,14 @@
     --spacing-lg: 24px;
     --spacing-xl: 32px;
     --spacing-2xl: 48px;
-    
+
     /* Border Radius */
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 15px;
     --radius-xl: 20px;
     --radius-full: 50%;
-    
+
     /* Shadows */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -65,7 +65,7 @@
     --shadow-xl: 0 15px 30px rgba(0, 0, 0, 0.4);
     --shadow-3d: 8px 8px 0px var(--color-black), 8px 8px 0px 4px var(--color-gold);
     --shadow-3d-hover: 12px 12px 0px var(--color-black), 12px 12px 0px 4px var(--color-gold);
-    
+
     /* Transitions */
     --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
@@ -97,7 +97,12 @@ body {
 /* ============================================
    TYPOGRAPHY
    ============================================ */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-heading);
     line-height: 1.2;
     margin-bottom: var(--spacing-md);
@@ -495,37 +500,76 @@ a:hover {
     background: var(--gradient-dark);
 }
 
-.mt-sm { margin-top: var(--spacing-sm); }
-.mt-md { margin-top: var(--spacing-md); }
-.mt-lg { margin-top: var(--spacing-lg); }
-.mt-xl { margin-top: var(--spacing-xl); }
+.mt-sm {
+    margin-top: var(--spacing-sm);
+}
 
-.mb-sm { margin-bottom: var(--spacing-sm); }
-.mb-md { margin-bottom: var(--spacing-md); }
-.mb-lg { margin-bottom: var(--spacing-lg); }
-.mb-xl { margin-bottom: var(--spacing-xl); }
+.mt-md {
+    margin-top: var(--spacing-md);
+}
 
-.p-sm { padding: var(--spacing-sm); }
-.p-md { padding: var(--spacing-md); }
-.p-lg { padding: var(--spacing-lg); }
-.p-xl { padding: var(--spacing-xl); }
+.mt-lg {
+    margin-top: var(--spacing-lg);
+}
+
+.mt-xl {
+    margin-top: var(--spacing-xl);
+}
+
+.mb-sm {
+    margin-bottom: var(--spacing-sm);
+}
+
+.mb-md {
+    margin-bottom: var(--spacing-md);
+}
+
+.mb-lg {
+    margin-bottom: var(--spacing-lg);
+}
+
+.mb-xl {
+    margin-bottom: var(--spacing-xl);
+}
+
+.p-sm {
+    padding: var(--spacing-sm);
+}
+
+.p-md {
+    padding: var(--spacing-md);
+}
+
+.p-lg {
+    padding: var(--spacing-lg);
+}
+
+.p-xl {
+    padding: var(--spacing-xl);
+}
 
 /* ============================================
    ANIMATIONS
    ============================================ */
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0px);
     }
+
     50% {
         transform: translateY(-10px);
     }
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0.5;
     }
+
     50% {
         opacity: 1;
     }
@@ -546,7 +590,7 @@ a:hover {
     .grid-4 {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .grid-3 {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -556,17 +600,17 @@ a:hover {
     html {
         font-size: 14px;
     }
-    
+
     h1 {
         font-size: 2.5rem;
     }
-    
+
     .grid-2,
     .grid-3,
     .grid-4 {
         grid-template-columns: 1fr;
     }
-    
+
     .nav-menu {
         display: none;
         flex-direction: column;
@@ -578,15 +622,15 @@ a:hover {
         padding: var(--spacing-lg);
         border-top: 2px solid var(--color-gold);
     }
-    
+
     .nav-menu.active {
         display: flex;
     }
-    
+
     .nav-toggle {
         display: block;
     }
-    
+
     .container,
     .container-narrow,
     .container-wide {
@@ -609,13 +653,13 @@ a:hover {
         background: white;
         color: black;
     }
-    
+
     .nav,
     .btn,
     .nav-toggle {
         display: none;
     }
-    
+
     .card {
         box-shadow: none;
         border: 2px solid black;
