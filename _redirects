@@ -1,0 +1,4 @@
+# Redirects from what the browser requests to what we serve
+
+# Custom 404 page (if created, otherwise Netlify default)
+/* /index.html 404
